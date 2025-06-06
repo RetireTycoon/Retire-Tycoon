@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retire Tycoon - Your Golden Years, Powered by Play</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a; /* Dark black for overall background */
+            color: #ffffff; /* White for all default text */
+        }
+        .section-padding {
+            padding: 4rem 1rem; /* Responsive padding for sections */
+        }
+        @media (min-width: 768px) {
+            .section-padding {
+                padding: 6rem 4rem;
+            }
+        }
+        .gradient-bg {
+            background-image: url('https://i.ibb.co/svJKxkpm/unnamed-28-7.png'); /* Updated background image URL */
+            background-size: cover; /* Ensures the image covers the entire section */
+            background-position: center; /* Centers the image */
+            background-repeat: no-repeat;
+            position: relative;
+            z-index: 0;
+            color: #ffffff; /* Ensure text remains white on new background */
+        }
+        /* Add an overlay to the gradient-bg to ensure text readability, similar to hero-background */
+        .gradient-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4); /* Dark overlay for text readability */
+            z-index: 1;
+        }
+        .gradient-bg > div { /* Target content inside gradient-bg to be above the overlay */
+            position: relative;
+            z-index: 2;
+        }
+
+        .card {
+            background-color: #1e1e1e; /* Slightly lighter black for cards for depth */
+            border-radius: 1rem; /* Rounded corners */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1); /* Slightly darker shadow */
+            color: #ffffff; /* White text on cards */
+        }
+        .btn-primary {
+            background-color: #00FF00; /* Primary button color - Bright Green */
+            color: #ffffff; /* White default, but will be overridden for "Discover the Game" */
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem; /* Rounded corners */
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #39FF14; /* Neon green shade on hover */
+        }
+        /* New style for background image */
+        .hero-background {
+            background-image: url('https://i.ibb.co/d0XvpqqW/first-background-064848.png'); /* Original background image URL */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+            z-index: 0;
+        }
+        .hero-background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6); /* Dark overlay for text readability */
+            z-index: 1;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        .contract-address-box {
+            background-color: rgba(0, 255, 0, 0.15); /* Transparent bright green */
+            backdrop-filter: blur(5px); /* Frosted glass effect */
+            border: 1px solid rgba(0, 255, 0, 0.25);
+            border-radius: 0.75rem;
+            padding: 0.5rem 1rem; /* Reduced padding for mobile */
+            margin-top: 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            overflow-x: auto; /* Allow horizontal scrolling only for this box */
+            -webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS */
+        }
+        @media (min-width: 768px) {
+            .contract-address-box {
+                padding: 0.75rem 1.5rem; /* Original padding for desktop */
+            }
+        }
+        .contract-address-box:hover {
+            background-color: rgba(0, 255, 0, 0.25);
+        }
+        .copy-message {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #00FF00; /* Bright green for copy message */
+            color: #ffffff; /* Changed to white for copy message text */
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            pointer-events: none; /* Allows clicks to pass through */
+            white-space: nowrap;
+        }
+        .copy-message.show {
+            opacity: 1;
+        }
+        /* Adjusted text colors for different sections - ALL TO WHITE */
+        .text-gray-800 { color: #ffffff; }
+        .text-gray-900 { color: #ffffff !important; } /* Ensured title text is white */
+        .text-gray-600 { color: #ffffff; }
+        .text-gray-700 { color: #ffffff; }
+        .text-purple-700 { color: #ffffff; } /* Changed to white */
+        .text-gray-400 { color: #ffffff; } /* Changed to white */
+
+        /* Background colors for sections to maintain contrast */
+        #about {
+            background-color: #000000; /* About section background is black */
+            color: #ffffff; /* Explicitly set text in this section to white */
+        }
+        #tokenomics {
+            background-color: #000000; /* Changed to black */
+            color: #ffffff; /* Explicitly set text in this section to white */
+        }
+        #gameplay {
+            background-color: #000000; /* Changed to black */
+            color: #ffffff; /* Explicitly set text in this section to white */
+        }
+        #roadmap {
+            background-color: #000000; /* Changed to black */
+            color: #ffffff; /* Explicitly set text in this section to white */
+        }
+
+        /* Adjust placeholder icon backgrounds for better contrast and bright green theme */
+        .bg-purple-100 { background-color: #00FF00; } /* Bright Green */
+        .bg-green-100 { background-color: #A700FF; } /* Bright Purple for ASSETS icon */
+        .bg-yellow-100 { background-color: #FFEB3B; } /* Yellow (kept as is for contrast) */
+        .bg-red-100 { background-color: #EF5350; } /* Red (kept as is for contrast) */
+        .bg-indigo-100 { background-color: #5C6BC0; } /* Indigo (kept as is for contrast) */
+        .bg-blue-100 { background-color: #42A5F5; } /* Blue (kept as is for contrast) */
+        .bg-purple-50 { background-color: #00FF00; } /* Bright Green */
+        .bg-indigo-50 { background-color: #5C6BC0; } /* Indigo (kept as is for contrast) */
+        .bg-purple-300 { border-color: #00FF00; } /* Border color for RET token card */
+
+
+        /* Navigation bar background and text color adjustment */
+        nav {
+            background-color: #000000; /* Changed to black */
+            color: white; /* Already white, keeping for clarity */
+            border-top: 4px solid #000000; /* Bright green top border -> Changed to black */
+        }
+        nav a {
+            color: #00FF00; /* Changed to bright green */
+        }
+        nav a:hover {
+            color: #39FF14; /* Neon green shade on hover */
+        }
+        #mobile-menu {
+            background-color: #000000; /* Changed to black for mobile menu */
+        }
+        #mobile-menu a {
+            color: #00FF00; /* Explicitly set to bright green */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Subtle separator */
+        }
+        #mobile-menu a:last-child {
+            border-bottom: none;
+        }
+        /* Roadmap line color adjustment */
+        .bg-purple-400 {
+            background-color: #00FF00; /* Changed roadmap line to bright green */
+        }
+        .bg-purple-600 {
+            background-color: #39FF14; /* Changed roadmap circle markers to neon green */
+        }
+        /* New style to position roadmap images relative to the line */
+        .roadmap-item-content {
+            display: flex;
+            flex-direction: column; /* Stack image and text vertically */
+            align-items: center; /* Center horizontally */
+        }
+
+        .roadmap-image-container {
+            margin-bottom: 1rem; /* Add some space below the image */
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Navigation Bar -->
+    <nav class="shadow-md p-4 sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <!-- Logo added here -->
+            <a href="#" class="flex items-center">
+                <img src="https://i.ibb.co/wNh0KtMN/Retire-Tycoon.png" alt="Retire-Tycoon Logo" class="h-12 md:h-24 w-auto mr-2">
+                <span class="text-2xl font-bold text-gray-900">Retire Tycoon</span>
+            </a>
+            <div class="hidden md:flex space-x-6">
+                <a href="#about" class="transition-colors">About</a>
+                <a href="#gameplay" class="transition-colors">Gameplay</a>
+                <a href="#tokenomics" class="transition-colors">Tokenomics</a>
+                <a href="#roadmap" class="transition-colors">Roadmap</a>
+                <a href="https://purple-myrtie-7.tiiny.site" target="_blank" class="transition-colors">Whitepaper</a>
+                <a href="#contact" class="transition-colors">Contact</a>
+                <a href="#" class="cursor-not-allowed" style="color: #00FF00;">Marketplace (Coming Soon)</a>
+            </div>
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full shadow-lg py-4">
+            <a href="#about" class="block px-4 py-2 hover:bg-gray-700 transition-colors">About</a>
+            <a href="#gameplay" class="block px-4 py-2 hover:bg-gray-700 transition-colors">Gameplay</a>
+            <a href="#tokenomics" class="block px-4 py-2 hover:bg-gray-700 transition-colors">Tokenomics</a>
+            <a href="#roadmap" class="block px-4 py-2 hover:bg-gray-700 transition-colors">Roadmap</a>
+            <a href="https://purple-myrtie-7.tiiny.site" target="_blank" class="block px-4 py-2 hover:bg-gray-700 transition-colors">Whitepaper</a>
+            <a href="#contact" class="block px-4 py-2 hover:bg-gray-700 transition-colors">Contact</a>
+            <a href="#" class="block px-4 py-2 border-bottom: 1px solid rgba(255, 255, 255, 0.1);" style="color: #00FF00;">Marketplace (Coming Soon)</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-background text-white text-center section-padding flex flex-col items-center justify-center min-h-[40vh] md:min-h-screen-75">
+        <div class="max-w-4xl mx-auto hero-content">
+            <h1 class="text-4xl md:text-7xl font-extrabold leading-tight mb-6 rounded-lg p-2">
+                Retire Tycoon
+            </h1>
+            <p class="text-lg md:text-2xl mb-8 opacity-90">
+                Road to Retirement, Powered by Play.
+            </p>
+            <!-- Token Contract Address -->
+            <div class="relative inline-block">
+                <div id="contract-address-box" class="contract-address-box">
+                    <span class="font-semibold text-[0.6rem] md:text-lg mr-0.5" style="white-space: nowrap;">Contract Address:</span>
+                    <span id="contract-address" class="font-mono text-[0.5rem] md:text-lg" style="white-space: nowrap;">0x0B14a272a2D72Bc7976EdcD8DE05F0863d2E7727</span>
+                    <!-- Copy icon (Lucide React equivalent or simple SVG) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-0.5 w-3 h-3 md:ml-2 md:w-5 md:h-5">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M18.5 2.5A2.5 2.5 0 0 0 16 0H4a2 2 0 0 0 2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8.5z"></path>
+                    </svg>
+                </div>
+                <div id="copy-message" class="copy-message">Copied!</div>
+            </div>
+
+            <a href="#gameplay" class="btn-primary text-lg font-semibold inline-block hover:scale-105 transform transition-transform" style="color: black;">
+                Discover the Game
+            </a>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="about" class="section-padding">
+        <div class="container mx-auto text-center max-w-5xl">
+            <h2 class="text-4xl font-bold mb-8">About Retire Tycoon</h2>
+            <p class="text-lg text-white mb-6">(On BSC)</p>
+            <p class="text-lg leading-relaxed mb-6">
+                Retire Tycoon is an innovative Play-to-Earn (P2E) simulation and strategy game where players embark on a unique journey to build and manage their virtual retirement portfolios. Dive into a dynamic economic world, make strategic investment decisions, and overcome challenges to achieve a comfortable and prosperous digital retirement.
+            </p>
+            <p class="text-lg leading-relaxed">
+                Our vision is to gamify financial literacy and provide a fun, engaging platform where players truly own their in-game assets through blockchain technology and NFTs. Prepare to craft your golden legacy!
+            </p>
+        </div>
+    </section>
+
+    <!-- Gameplay Section -->
+    <section id="gameplay" class="section-padding">
+        <div class="container mx-auto text-center max-w-6xl">
+            <h2 class="text-4xl font-bold mb-12">How to Play & Thrive</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Card 1: Character Creation -->
+                <div class="card p-6 flex flex-col items-center text-center">
+                    <img src="https://placehold.co/100x100/00FF00/000000?text=AVATAR" alt="Character Creation Icon" class="w-24 h-24 mb-4 rounded-full p-2">
+                    <h3 class="text-2xl font-semibold mb-3">1. Create Your Retiree Avatar</h3>
+                    <p>Begin your journey by customizing your unique Retiree Avatar (NFT), each with traits that subtly influence your path to prosperity.</p>
+                </div>
+                <!-- Card 2: Asset Acquisition -->
+                <div class="card p-6 flex flex-col items-center text-center">
+                    <img src="https://placehold.co/100x100/A700FF/000000?text=ASSETS" alt="Asset Acquisition Icon" class="w-24 h-24 mb-4 rounded-full p-2">
+                    <h3 class="text-2xl font-semibold mb-3">2. Acquire & Manage Assets</h3>
+                    <p>Invest in diverse NFTs: virtual real estate, businesses, stocks, and unique alternative investments to build your portfolio.</p>
+                </div>
+                <!-- Card 3: Income Generation -->
+                <div class="card p-6 flex flex-col items-center text-center">
+                    <img src="https://placehold.co/100x100/FFEB3B/000000?text=INCOME" alt="Income Generation Icon" class="w-24 h-24 mb-4 rounded-full p-2">
+                    <h3 class="text-2xl font-semibold mb-3">3. Generate Income & Grow</h3>
+                    <p>Earn passive income from rentals and dividends, or active income by managing your businesses and completing quests.</p>
+                </div>
+                <!-- Card 4: Retirement Goals -->
+                <div class="card p-6 flex flex-col items-center text-center">
+                    <img src="https://placehold.co/100x100/EF5350/000000?text=GOALS" alt="Retirement Goals Icon" class="w-24 h-24 mb-4 rounded-full p-2">
+                    <h3 class="text-2xl font-semibold mb-3">4. Achieve Retirement Goals</h3>
+                    <p>Set and reach personalized retirement milestones to unlock new content, opportunities, and exclusive rewards.</p>
+                </div>
+                <!-- Card 5: Community Interaction -->
+                <div class="card p-6 flex flex-col items-center text-center">
+                    <img src="https://placehold.co/100x100/5C6BC0/000000?text=COMMUNITY" alt="Community Icon" class="w-24 h-24 mb-4 rounded-full p-2">
+                    <h3 class="text-2xl font-semibold mb-3">5. Engage with the Community</h3>
+                    <p>Form "Retirement Communities" (guilds), trade on the marketplace, and interact in vibrant social spaces.</p>
+                </div>
+                <!-- Card 6: Economic Challenges -->
+                <div class="card p-6 flex flex-col items-center text-center">
+                    <img src="https://placehold.co/100x100/42A5F5/000000?text=CHALLENGE" alt="Economic Challenges Icon" class="w-24 h-24 mb-4 rounded-full p-2">
+                    <h3 class="text-2xl font-semibold mb-3">6. Navigate Economic Events</h3>
+                    <p>Adapt your strategies to dynamic in-game events like market fluctuations and unexpected challenges.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tokenomics Section -->
+    <section id="tokenomics" class="section-padding">
+        <div class="container mx-auto text-center max-w-5xl">
+            <h2 class="text-4xl font-bold mb-12">Our Token Economy</h2>
+            <div class="grid grid-cols-1 gap-8 justify-items-center">
+                <!-- $RET Token -->
+                <div class="card p-6 text-center border-2 border-purple-300 w-full max-w-md">
+                    <img src="https://placehold.co/100x100/00FF00/000000?text=$RET" alt="$RET Token Icon" class="w-24 h-24 mx-auto mb-4 rounded-full p-2">
+                    <h3 class="text-3xl font-bold mb-3 text-white">$RET Token</h3>
+                    <p class="mb-4">
+                        The utility token of Retire Tycoon. $RET is the primary in-game currency used for:
+                    </p>
+                    <ul class="list-disc list-inside text-left space-y-2">
+                        <li>Buying and selling all in-game assets (properties, businesses).</li>
+                        <li>Upgrading your assets and lifestyle.</li>
+                        <li>Covering daily expenses and operational costs.</li>
+                        <li>Earning rewards from quests and mini-games.</li>
+                        <li>**0/0 Tax on all transactions.**</li>
+                    </ul>
+                </div>
+            </div>
+            <p class="text-lg mt-8">
+                Our token model ensures a sustainable economy, balancing in-game utility with long-term value and community governance.
+            </p>
+        </div>
+    </section>
+
+    <!-- Roadmap Section -->
+    <section id="roadmap" class="section-padding">
+        <div class="container mx-auto text-center max-w-5xl">
+            <h2 class="text-4xl font-bold mb-12">Our Journey: The Roadmap</h2>
+            <div class="relative">
+                <!-- Roadmap Line -->
+                <div class="absolute hidden md:block w-1 h-full bg-purple-400 left-1/2 transform -translate-x-1/2"></div>
+                
+                <!-- Roadmap Items -->
+                <div class="space-y-16">
+                    <!-- Phase 1 -->
+                    <div class="flex flex-col md:flex-row items-center justify-between md:odd:flex-row-reverse">
+                        <div class="md:w-1/2 text-center md:text-right p-4">
+                            <!-- Image first, then card -->
+                            <div class="roadmap-item-content">
+                                <div class="roadmap-image-container">
+                                    <img src="https://i.ibb.co/TxStg6Sz/logo-2.png" alt="Roadmap Logo 2" class="max-w-[6rem] md:max-w-[8rem] h-auto">
+                                </div>
+                                <div class="card p-6 text-left text-white">
+                                    <h3 class="text-2xl font-semibold mb-2" style="color: #00FF00;">Phase 1: Foundation (Alpha)</h3>
+                                    <p>
+                                        Core game mechanics (property acquisition, basic income). Retiree Avatars & Starter Homes NFTs. $RET token implementation. Basic in-game marketplace.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hidden md:block w-8 h-8 bg-purple-600 rounded-full flex-shrink-0 z-10"></div>
+                        <div class="md:w-1/2 text-center md:text-left p-4"></div>
+                    </div>
+
+                    <!-- Phase 2 -->
+                    <div class="flex flex-col md:flex-row items-center justify-between md:flex-row-reverse">
+                        <div class="md:w-1/2 text-center md:text-right p-4"></div>
+                        <div class="hidden md:block w-8 h-8 bg-purple-600 rounded-full flex-shrink-0 z-10"></div>
+                        <div class="md:w-1/2 text-center md:text-left p-4">
+                            <!-- Image first, then card -->
+                            <div class="roadmap-item-content">
+                                <div class="roadmap-image-container">
+                                    <img src="https://i.ibb.co/TxStg6Sz/logo-2.png" alt="Roadmap Logo 2" class="max-w-[6rem] md:max-w-[8rem] h-auto">
+                                </div>
+                                <div class="card p-6">
+                                    <h3 class="text-2xl font-semibold mb-2" style="color: #00FF00;">Phase 2: Expansion (Beta)</h3>
+                                    <p>
+                                        Introduction of Businesses & Stocks/Bonds. Advanced economic events. $RET token staking. Guild/Community features. First set of mini-games.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phase 3 -->
+                    <div class="flex flex-col md:flex-row items-center justify-between md:odd:flex-row-reverse">
+                        <div class="md:w-1/2 text-center md:text-right p-4">
+                            <!-- Image first, then card -->
+                            <div class="roadmap-item-content">
+                                <div class="roadmap-image-container">
+                                    <img src="https://i.ibb.co/TxStg6Sz/logo-2.png" alt="Roadmap Logo 2" class="max-w-[6rem] md:max-w-[8rem] h-auto">
+                                </div>
+                                <div class="card p-6">
+                                    <h3 class="text-2xl font-semibold mb-2" style="color: #00FF00;">Phase 3: Full Launch & Ecosystem Growth</h3>
+                                    <p>
+                                        DAO governance activation. Player-vs-Player (PvP) economic challenges. Regular content updates, new asset types, and events. Mobile app integration.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hidden md:block w-8 h-8 bg-purple-600 rounded-full flex-shrink-0 z-10"></div>
+                        <div class="md:w-1/2 text-center md:text-left p-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action / Join Community Section -->
+    <section class="gradient-bg text-white text-center section-padding">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-4xl font-bold mb-6">Ready to Build Your Retirement Empire?</h2>
+            <p class="text-xl mb-8 opacity-90">
+                Join our thriving community of future Retire Tycoons!
+            </p>
+            <a href="https://t.me/+DdHwz-fIv55lYzdh" class="btn-primary text-lg font-semibold inline-block hover:scale-105 transform transition-transform" style="color: black;">
+                Join Our Community
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-gray-900 text-white py-8">
+        <div class="container mx-auto text-center">
+            <p class="text-lg mb-4">Retire Tycoon &copy; 2025. All rights reserved.</p>
+            <div class="flex justify-center space-x-6">
+                <a href="https://x.com/RetireTycoon" class="text-gray-400 hover:text-white transition-colors">Twitter (X)</a>
+                <a href="https://t.me/+DdHwz-fIv55lYzdh" class="text-gray-400 hover:text-white transition-colors">Telegram</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript for Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when a link is clicked
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // JavaScript for Copying Contract Address
+        const contractAddressBox = document.getElementById('contract-address-box');
+        const contractAddressSpan = document.getElementById('contract-address');
+        const copyMessage = document.getElementById('copy-message');
+
+        contractAddressBox.addEventListener('click', () => {
+            const address = contractAddressSpan.textContent;
+            // Use document.execCommand('copy') for better compatibility in iframes
+            const textarea = document.createElement('textarea');
+            textarea.value = address;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            // Show "Copied!" message
+            copyMessage.classList.add('show');
+            setTimeout(() => {
+                copyMessage.classList.remove('show');
+            }, 1500); // Hide after 1.5 seconds
+        });
+    </script>
+</body>
+</html>
